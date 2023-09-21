@@ -42,11 +42,8 @@ public class Player : Character
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if(hit.transform.gameObject.tag == "Enemy")
-                    {
-                        Enemy enemy = hit.transform.GetComponent<Enemy>();
-                        enemy.TakeDamage();
-                    }
+                    CheckHit(hit);
+                    
                 }
                 gunSounds.Shoot();
                 bullets--;
@@ -89,6 +86,32 @@ public class Player : Character
         state = ShootState.Ready;
     }
 
+    void CheckHit(RaycastHit hit)
+    {
+        if(hit.rigidbody!=null)
+        {
+            hit.rigidbody.AddForce(-hit.normal*80f);
+        }
+        try
+        {
+            Enemy enemy = hit.transform.GetComponent<Enemy>();
+            switch(enemy.limbType)
+            {
+                case Enemy.Limbs.Head: enemy.TakeDamage(weaponDamage/armorpoint);
+                        break;
+                case Enemy.Limbs.Body: enemy.TakeDamage(weaponDamage / armorpoint/2);
+                        break;
+                case Enemy.Limbs.Arms: enemy.TakeDamage(weaponDamage / armorpoint/4);
+                        break;
+            }
+
+        }
+        catch
+        {
+
+        }
+        
+    }
 }
     
 

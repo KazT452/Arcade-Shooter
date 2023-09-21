@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public float health = 100f;
-    public float armor = 0f;
+    public float healthPoint = 100f;
+    public float armorpoint = 1f;
+    public float weaponDamage = 35f;
+    public int scorePoint;
+    public GameManager gameManager;
+
+    private void Awake()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+    }
     // Start is called before the first frame update
     void Start()
     {

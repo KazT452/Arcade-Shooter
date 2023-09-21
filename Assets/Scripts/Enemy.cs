@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy : Character
 {
+    public enum Limbs {Head,Body,Arms }
+    public Limbs limbType;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,14 +15,31 @@ public class Enemy : Character
     // Update is called once per frame
     void Update()
     {
-        if(health<=0)
-        { 
+    }
+
+    public void TakeDamage(float value)
+    {
+        healthPoint -= value;
+        if(healthPoint <= 0)
+        {
             Destroy(gameObject);
+            gameManager.score += scorePoint;
         }
     }
 
-    public void TakeDamage()
+    private void OnCollisionEnter(Collision collision)
     {
-        health -= 20f;
+        try
+        {
+            Player player = collision.gameObject.GetComponent<Player>();
+            if(player != null)
+            {
+                gameManager.score -= scorePoint / 2;
+            }
+        }
+        catch
+        {
+
+        }
     }
 }
